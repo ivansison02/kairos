@@ -29,7 +29,6 @@ class LocationAdapter(val context: Context, val parent: LocationActivity, val it
             .into(holder.imgAction)
 
         holder.imgAction.setOnClickListener {
-            // TODO: Warning alert
             parent.onDeleteItem(location)
             notifyDataSetChanged()
         }

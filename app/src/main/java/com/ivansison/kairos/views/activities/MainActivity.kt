@@ -18,32 +18,17 @@ import com.ivansison.kairos.models.RecentSearches
 import com.ivansison.kairos.models.UserPreferences
 import com.ivansison.kairos.utils.CacheUtil
 import com.ivansison.kairos.utils.DialogUtil
+import com.ivansison.kairos.utils.LocationUtil
 import com.ivansison.kairos.utils.PermissionUtil
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LocationUtil.LocationInterface {
 
     private val mDuration: Long = 4000
 
-    private lateinit var mLocation: Location
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient
-
     private var mCache: CacheUtil? = null
     private var mLoadingDialog: DialogUtil? = null
-
-    private val mLocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            mLocation = locationResult.lastLocation
-            onManageCache()
-            onStartAnimation()
-        }
-    }
-
-    private fun onManageCache() {
-        mCache?.updateCache(
-            UserPreferences(true, com.ivansison.kairos.models.Location(0, "", "", "", Coordinates(mLocation.latitude, mLocation.longitude)), ""))
-        mCache?.updateCache(RecentSearches())
-    }
+    private var mLocationUtil: LocationUtil? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,17 +36,23 @@ class MainActivity : AppCompatActivity() {
 
         mCache = CacheUtil(this)
         mLoadingDialog = DialogUtil(this)
+        mLocationUtil = LocationUtil(this, this)
 
         if (mCache!!.hasCache()) onStartAnimation()
-        else getLastLocation()
+        else getLocation()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == PermissionUtil.PERMISSION_ID) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getLastLocation()
+                getLocation()
             }
         }
+    }
+
+    private fun getLocation() {
+        onStartLoading()
+        mLocationUtil?.getLastLocation()
     }
 
     private fun onStartLoading() {
@@ -73,60 +64,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onStartAnimation() {
-        onStopLoading()
-
         Handler().postDelayed(Runnable {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }, mDuration)
     }
 
-    private fun isLocationEnabled(): Boolean {
-        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
+    // MARK: - LocationInterface
+    override fun onFoundLocation(location: Location) {
+        mCache?.updateCache(UserPreferences(true, com.ivansison.kairos.models.Location(0, "", "", "", Coordinates(location.latitude, location.longitude)), ""))
+        mCache?.updateCache(RecentSearches())
 
-    @SuppressLint("MissingPermission")
-    private fun getLastLocation() {
-        if (PermissionUtil.checkPermissions(this)) {
-            onStartLoading()
-
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-            if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation
-                    .addOnSuccessListener { location : Location? ->
-                        if (location == null) {
-                            requestNewLocationData()
-                        } else {
-                            mLocation = location
-                            onManageCache()
-                            onStartAnimation()
-                        }
-                    }
-            } else {
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-        } else {
-            PermissionUtil.requestPermissions(this)
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun requestNewLocationData() {
-        var mLocationRequest = LocationRequest()
-        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        mLocationRequest.interval = 0
-        mLocationRequest.fastestInterval = 0
-        mLocationRequest.numUpdates = 1
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        mFusedLocationClient!!.requestLocationUpdates(
-            mLocationRequest, mLocationCallback,
-            Looper.myLooper()
-        )
+        onStopLoading()
+        onStartAnimation()
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    tools:background="@color/colorPrimary">
+
+    <View
+        android:id="@+id/view_txt"
+        android:layout_width="100dp"
+        android:layout_height="15dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="20dp"
+        android:paddingBottom="8dp"
+        android:background="@color/colorShimmer"/>
+
+    <View
+        android:id="@+id/img_weather"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_toEndOf="@+id/view_txt"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
+        android:background="@color/colorShimmer"/>
+</RelativeLayout>

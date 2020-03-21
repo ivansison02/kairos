@@ -1,15 +1,26 @@
 <resources>
     <string name="app_name">Kairos</string>
+
+    <string name="message_title_notice">Notice</string>
+    <string name="message_ok">OK</string>
+    <string name="message_invalid_field">Invalid field</string>
+
+    <string name="concat_city_country">%s, %s</string>
+
+    <string name="units_fahrenheit">°F</string>
+    <string name="units_celcius">°C</string>
+
     <string name="view_location_search">Search location</string>
     <string name="view_location_my">My Location</string>
     <string name="view_location_recent_searches">Recent Searches</string>
     <string name="view_location_title">Locations</string>
     <string name="view_location_get_current">Get current location</string>
-
-    <string name="units_fahrenheit">°F</string>
-    <string name="units_celcius">°C</string>
-    <string name="message_invalid_field">Invalid field</string>
     <string name="view_location_no_results">No Results Found</string>
-    <string name="message_title_notice">Notice</string>
-    <string name="message_ok">Ok</string>
+
+    <string name="view_settings_about">About</string>
+    <string name="view_settings_about_description">This app is for the requirement of the position Android Mobile Developer.</string>
+    <string name="view_settings_units">Units</string>
+    <string name="view_settings_temperature">Temperature</string>
+    <string name="view_settings_units_temperature">Selected: %s</string>
+    <string name="view_settings_title">Settings</string>
 </resources>

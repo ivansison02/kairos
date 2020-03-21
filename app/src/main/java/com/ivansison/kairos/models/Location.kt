@@ -5,4 +5,5 @@ class Location(
     var country: String,
     var address1: String,
     var address2: String,
-    var coordinates: Coordinates?)
+    var coordinates: Coordinates?
+)

@@ -2,10 +2,10 @@ package com.ivansison.kairos.models
 
 import com.google.gson.annotations.SerializedName
 
-class Coordinates(var latitude: Double, var longitude: Double) {
+class Coordinates(
     @SerializedName("lon")
-    var lon: Float = 0.toFloat()
+    var latitude: Double,
 
     @SerializedName("lat")
-    var lat: Float = 0.toFloat()
-}
+    var longitude: Double
+)

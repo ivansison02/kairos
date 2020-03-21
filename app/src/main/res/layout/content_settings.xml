@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_settings"
+    tools:context=".views.activities.SettingsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin_medium"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        android:text="@string/view_settings_units"
+        android:textAllCaps="true"
+        style="@style/TextAppearance.ContentTitle.Primary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_margin_small"
+            android:text="@string/view_settings_temperature"
+            android:textAllCaps="true"
+            style="@style/TextAppearance.ContentTitle"/>
+
+        <TextView
+            android:id="@+id/txt_temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_margin_extra_small"
+            android:text="@string/view_settings_units_temperature"
+            style="@style/TextAppearance.ContentBody"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin_large"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        android:text="@string/view_settings_about"
+        android:textAllCaps="true"
+        style="@style/TextAppearance.ContentTitle.Primary"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin_extra_small"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        android:text="@string/view_settings_about_description"
+        style="@style/TextAppearance.ContentBody"/>
+</LinearLayout>

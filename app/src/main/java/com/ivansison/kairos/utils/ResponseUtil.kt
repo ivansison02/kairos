@@ -10,7 +10,7 @@ object ResponseUtil {
         else -> false
     }
 
-    fun getErrorMessage(response: Response<WeatherResponse>, location: String) = when { 
+    fun getErrorMessage(response: Response<WeatherResponse>, location: String) = when {
         response.toString().toLowerCase().contains("not found") -> "Location: ${location} can't be found."
         else -> "There is a problem with your internet problem or server. Please try again later."
     }

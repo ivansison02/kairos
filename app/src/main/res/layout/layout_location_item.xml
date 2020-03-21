@@ -40,5 +40,5 @@
         android:layout_marginStart="@dimen/view_margin_medium"
         android:layout_marginEnd="@dimen/view_margin_medium"
         android:layout_below="@+id/txt_address2"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorShimmer"/>
 </RelativeLayout>

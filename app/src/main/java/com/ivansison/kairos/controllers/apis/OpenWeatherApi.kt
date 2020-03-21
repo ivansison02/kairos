@@ -8,7 +8,7 @@ class OpenWeatherApi {
     companion object {
         val ID: String = "bb4ba03149bbdf75c75449ab2299780d"
         var URL = "https://api.openweathermap.org/"
-        val URL_ICON = "http://openweathermap.org/img/wn/"
+        val URL_ICON = "https://openweathermap.org/img/wn/"
         val ICON_SIZE = "@2x.png"
 
         private fun getBuilder(): Retrofit {

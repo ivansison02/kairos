@@ -13,21 +13,25 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.ivansison.kairos.R
+import com.ivansison.kairos.models.Coordinates
 import com.ivansison.kairos.models.Location
 import com.ivansison.kairos.models.RecentSearches
+import com.ivansison.kairos.models.UserPreferences
 import com.ivansison.kairos.utils.CacheUtil
+import com.ivansison.kairos.utils.DialogUtil
+import com.ivansison.kairos.utils.LocationUtil
 import com.ivansison.kairos.utils.ValidateUtil
 import com.ivansison.kairos.views.adapters.LocationAdapter
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.content_location.*
 
-class LocationActivity : AppCompatActivity() {
+class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
 
     private var mCurrentLocation: Location? = null
     private var mRecentSearches: ArrayList<Location> = ArrayList()
 
     private var mCache: CacheUtil? = null
+    private var mDialog: DialogUtil? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,8 @@ class LocationActivity : AppCompatActivity() {
         val imgAction: ImageView = layout.findViewById(R.id.img_action)
         imgAction.setOnClickListener {
             // TODO: Get/Refresh location
+            onStartLoading()
+            LocationUtil(this, this).getLastLocation()
         }
 
         Glide.with(this).load(this.getDrawable(R.drawable.ic_refresh_2x))
@@ -91,6 +97,14 @@ class LocationActivity : AppCompatActivity() {
         onManageLocationResults()
     }
 
+    private fun onStartLoading() {
+        mDialog?.onShowLoading()
+    }
+
+    private fun onStopLoading() {
+        mDialog?.onHideLoading()
+    }
+
     private fun onManageLocationResults() {
         if (mRecentSearches.size == 0) lyt_no_avail.visibility = View.VISIBLE
         else lyt_no_avail.visibility = View.GONE
@@ -112,5 +126,13 @@ class LocationActivity : AppCompatActivity() {
         recentSearches.locations = mRecentSearches
         mCache?.updateCache(recentSearches)
         onManageLocationResults()
+    }
+
+    override fun onFoundLocation(location: android.location.Location) {
+        mCache?.updateCache(UserPreferences(true, Location(0, "", "", "", Coordinates(location.latitude, location.longitude)), ""))
+        onStopLoading()
+
+        setResult(Activity.RESULT_FIRST_USER, Intent())
+        finish()
     }
 }
