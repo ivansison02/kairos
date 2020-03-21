@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Kairos</string>
+    <string name="view_location_search">Search location</string>
+    <string name="view_location_my">My Location</string>
+    <string name="view_location_recent_searches">Recent Searches</string>
+    <string name="view_location_title">Locations</string>
+    <string name="view_location_get_current">Get current location</string>
+
+    <string name="units_fahrenheit">°F</string>
+    <string name="units_celcius">°C</string>
+    <string name="message_invalid_field">Invalid field</string>
+    <string name="view_location_no_results">No Results Found</string>
+    <string name="message_title_notice">Notice</string>
+    <string name="message_ok">Ok</string>
+</resources>
