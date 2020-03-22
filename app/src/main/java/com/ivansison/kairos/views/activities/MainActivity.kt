@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity(), LocationUtil.LocationInterface {
             true,
             LocationModel(0, "", "", "",
             Coordinates(location.latitude, location.longitude)),
-            DummyUtil.getDefaultUnit(),
-            DummyUtil.getUnits()))
+            DummyUtil.getDefaultUnit(this),
+            DummyUtil.getUnits(this)))
         mCache?.updateCache(RecentSearches())
 
         onStopLoading()

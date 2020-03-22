@@ -6,13 +6,21 @@
     <string name="message_ok">OK</string>
     <string name="message_invalid_field">Invalid field</string>
     <string name="message_success_changes">App needs to restart. Upon pressing OK, it will restart to make changes.</string>
+    <string name="message_could_not_load_results">Could not load results</string>
 
     <string name="concat_city_country">%s, %s</string>
     <string name="concat_selected_value">Selected: %s</string>
+    <string name="concat_value_unit">%s %s</string>
 
     <string name="symbol_fahrenheit">°F</string>
     <string name="symbol_celsius">°C</string>
     <string name="symbol_kelvin">K</string>
+    <string name="symbol_pascal_hecto">hPa</string>
+    <string name="symbol_percentage">%</string>
+    <string name="symbol_degree">°</string>
+    <string name="symbol_meter_per_second">m/s</string>
+    <string name="symbol_miles_per_hour">mph</string>
+    <string name="symbol_millimeter">mm</string>
 
     <string name="view_location_search">Search location</string>
     <string name="view_location_my">My Location</string>
@@ -33,6 +41,8 @@
     <string name="view_settings_level_sea">Sea Level</string>
     <string name="view_settings_level_ground">Ground Level</string>
     <string name="view_settings_wind">Wind</string>
+    <string name="view_settings_rain">Rain</string>
+    <string name="view_settings_snow">Snow</string>
     <string name="view_settings_feels_like">Feels Like</string>
 
     <string name="unit_of_measurement">Unit of Measurement</string>
@@ -43,10 +53,11 @@
     <string name="unit_kelvin">Kelvin</string>
     <string name="unit_celsius">Celsius</string>
     <string name="unit_fahrenheit">Fahrenheit</string>
+    <string name="unit_millimeter">Millimeter</string>
     <string name="unit_pascal_hecto">hPa</string>
-    <string name="unit_meter_per_second">Meter/Sec</string>
-    <string name="unit_miles_per_hour">Miles/Hour</string>
+    <string name="unit_meter_per_second">Meter per Sec</string>
+    <string name="unit_miles_per_hour">Miles per Hour</string>
     <string name="view_settings_cloudiness">Cloudiness</string>
     <string name="view_settings_precipitation">Precipitation</string>
-    <string name="view_settings_snow">Snow</string>
+    <string name="unit_degree">Degree</string>
 </resources>

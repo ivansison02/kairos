@@ -45,9 +45,9 @@ class HomeActivity : AppCompatActivity() {
         mCache = CacheUtil(this)
         mDialog = DialogUtil(this, null)
 
-        onStartAnimating()
-
         mUserPrefs = mCache?.getUserPreferences()
+
+        lyt_error.visibility = View.GONE
 
         if (mCache!!.hasCache() && mUserPrefs?.isNew!!) getCurrentWeather(mUserPrefs?.location?.coordinates?.latitude.toString(), mUserPrefs?.location?.coordinates?.longitude.toString())
         else onManageLocationSearches()
@@ -72,7 +72,6 @@ class HomeActivity : AppCompatActivity() {
         var location: Location? = null
 
         // Check if current location is most recent search or no recent search is existing, then display current location
-        Log.i(ConstantUtil.TAG, "CURRENT LOCATION IS MOST RECENT?: ${mCache?.getRecentSearches()?.isCurrentLocation!!}")
         if (mCache?.getRecentSearches()?.isCurrentLocation!! ||
             mCache?.getRecentSearches()?.locations?.size == 0) location = mCache?.getUserPreferences()?.location!!
         else location = mCache?.getRecentSearches()!!.locations[0]
@@ -89,18 +88,6 @@ class HomeActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun onStartAnimating() {
-        shimmer_header.visibility = View.VISIBLE
-        shimmer_header.startShimmer()
-    }
-
-    private fun onStopAnimating() {
-        if (shimmer_header.isShimmerVisible) {
-            shimmer_header.visibility = View.GONE
-            shimmer_header.stopShimmer()
-        }
-    }
-
     private fun onStartLoading() {
         mDialog?.onShowLoading()
     }
@@ -110,7 +97,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getCurrentWeather(latitude: String, longitude: String) {
-        Log.i(ConstantUtil.TAG, "Getting weather of current location")
+        onStartLoading()
         OpenWeatherApi.getCurrentWeather(lat = latitude, lon = longitude, unit =  mUserPrefs?.prefUnit?.value!!)
             .enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(
@@ -121,6 +108,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                    lyt_error.visibility = View.VISIBLE
                     onShowDialog(ResponseUtil.getErrorMessage(t.toString()))
                 }
             })
@@ -128,7 +116,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getCurrentWeather(q: String) {
         onStartLoading()
-        Log.i(ConstantUtil.TAG, "Getting weather of current location by city, zip")
         OpenWeatherApi.getCurrentWeather(q, mUserPrefs?.prefUnit?.value!!)
             .enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(
@@ -139,26 +126,41 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                    lyt_error.visibility = View.VISIBLE
                     onShowDialog(ResponseUtil.getErrorMessage(t.toString()))
                 }
             })
     }
 
     private fun onValidateRequest(parameter: String, response: Response<WeatherResponse>) {
-        onStopAnimating()
+        clearDisplay()
 
         if (ResponseUtil.isSuccessful(response.code())) onFoundCurrentWeather(response.body()!!)
         else onShowDialog(ResponseUtil.getErrorMessage(response, parameter))
     }
 
+    private fun clearDisplay() {
+        txt_location.text = ""
+        txt_degree.text = ""
+        txt_unit.text = ""
+        lyt_error.visibility = View.VISIBLE
+
+        rcv_weather_type.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rcv_weather_type.adapter = WeatherTypeAdapter(this, this, ArrayList())
+
+        rcv_weather_detail.layoutManager = GridLayoutManager(this, 2)
+        rcv_weather_detail.adapter = WeatherDetailAdapter(this, mUserPrefs?.prefUnit!!, ArrayList())
+    }
+
     private fun onShowDialog(message: String) {
         if (swipe_home.isRefreshing) swipe_home.isRefreshing = false
         onStopLoading()
-
         mDialog?.onShowMessage(getString(R.string.message_title_notice), message, getString(R.string.message_ok),null, null)
     }
 
     private fun onFoundCurrentWeather(weather: WeatherResponse) {
+        lyt_error.visibility = View.GONE
+
         if (swipe_home.isRefreshing) swipe_home.isRefreshing = false
         onStopLoading()
 
@@ -177,21 +179,28 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        val country = weather.sys?.country!!
+        val country: String? = weather.sys?.country
         val city = weather.name!!
+        when (weather.sys?.country) {
+            null -> txt_location.text = city
+            else -> txt_location.text = getString(R.string.concat_city_country, city, country)
+        }
 
-        if (mUserPrefs?.prefUnit?.value!! == getString(R.string.unit_standard)) txt_unit.text = getString(R.string.symbol_kelvin)
-        else if (mUserPrefs?.prefUnit?.value!! == getString(R.string.unit_metric)) txt_unit.text = getString(R.string.symbol_celsius)
-        else txt_unit.text = getString(R.string.symbol_fahrenheit)
+
+        when (mUserPrefs?.prefUnit?.value!!) {
+            getString(R.string.unit_standard) -> txt_unit.text = getString(R.string.symbol_kelvin)
+            getString(R.string.unit_metric) -> txt_unit.text = getString(R.string.symbol_celsius)
+            else -> getString(R.string.symbol_fahrenheit)
+        }
 
         txt_degree.text = weather.details?.temp.toString()
-        txt_location.text = getString(R.string.concat_city_country, city, country)
 
         rcv_weather_type.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rcv_weather_type.adapter = WeatherTypeAdapter(this, this, weather.weatherType)
 
         rcv_weather_detail.layoutManager = GridLayoutManager(this, 2)
-        rcv_weather_detail.adapter = WeatherDetailAdapter(this, this,
+        rcv_weather_detail.adapter = WeatherDetailAdapter(this,
+            mUserPrefs?.prefUnit!!,
             WeatherDetailUtil.getDetails(
                 this,
                 weather.details,
@@ -200,6 +209,7 @@ class HomeActivity : AppCompatActivity() {
                 weather.rain,
                 weather.snow))
 
+        // USER IS NEW, DISPLAYING CURRENT LOCATION
         if (mUserPrefs?.isNew!!) {
             mUserPrefs?.isNew = false
             mUserPrefs?.location?.country = country
@@ -208,8 +218,8 @@ class HomeActivity : AppCompatActivity() {
 
             setCurrentLocation()
         }
+        // CURRENT LOCATION IS MOST RECENT SEARCH
         else if (hasSameLocation(country, city, mUserPrefs?.location?.country!!, mUserPrefs?.location?.address1!!)) {
-            Log.i(ConstantUtil.TAG, "SET CURRENT LOCATION TO MOST RECENT SEARCHES")
             setCurrentLocation()
         }
         else  {
@@ -217,43 +227,36 @@ class HomeActivity : AppCompatActivity() {
             recentSearches?.isCurrentLocation = false
 
             if (recentSearches?.locations!!.size == 0) {
-                Log.i(ConstantUtil.TAG, "NEW LOCATION")
+                // NEW SEARCH
                 recentSearches.locations.add(Location(weather.id.toLong(), country, city, "", weather.coord))
                 onUpdateRecentSearches(recentSearches)
             }
             else {
                 var newLocation: Location? = null
-                var hasLocation = false
                 for (location in recentSearches.locations) {
                     newLocation = Location(weather.id.toLong(), country, city, "", weather.coord)
 
                     val savedCountry = location.country
                     val savedCity = location.address1
 
-                    Log.i(ConstantUtil.TAG, "Checking location: ${location.id}}")
-
                     if (hasSameLocation(country, city, savedCountry, savedCity)) {
-                        Log.i(ConstantUtil.TAG, "SAME LOCATION: ${country}, ${city}")
+                        // FOUND IN SAVED LOCATIONS
                         recentSearches.locations.remove(location)
-                        hasLocation = true
                         break
                     }
                 }
 
-                if (!hasLocation) {
-                    Log.i(ConstantUtil.TAG, "LOCATION NOT YET SAVED")
-                    recentSearches.locations.add(0, newLocation!!)
-                    onUpdateRecentSearches(recentSearches)
-                }
-                else {
-                    recentSearches.locations.add(0, newLocation!!)
-                    onUpdateRecentSearches(recentSearches)
-                }
+                recentSearches.locations.add(0, newLocation!!)
+
+                val currentLocationSize = recentSearches.locations.size
+                if (currentLocationSize > LocationUtil.MAX_SEARCHES) recentSearches.locations.removeAt(currentLocationSize - 1)
+
+                onUpdateRecentSearches(recentSearches)
             }
         }
     }
 
-    private fun hasSameLocation(newCountry: String, newCity: String, savedCountry: String, savedCity: String): Boolean {
+    private fun hasSameLocation(newCountry: String?, newCity: String, savedCountry: String?, savedCity: String): Boolean {
         return newCountry == savedCountry && newCity == savedCity
     }
 

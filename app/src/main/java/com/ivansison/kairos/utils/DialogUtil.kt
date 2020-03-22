@@ -21,17 +21,19 @@ class DialogUtil(private var context: Context, private var delegate: CustomDialo
     }
 
     fun onShowLoading() {
-        mDialog = Dialog(context)
-        mDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        mDialog!!.setCancelable(false)
-        mDialog!!.setContentView(R.layout.layout_loading)
+        if (mDialog == null) {
+            mDialog = Dialog(context)
+            mDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            mDialog!!.setCancelable(false)
+            mDialog!!.setContentView(R.layout.layout_loading)
 
-        val imgLoading: ImageView = mDialog!!.findViewById(R.id.img_loading)
+            val imgLoading: ImageView = mDialog!!.findViewById(R.id.img_loading)
 
-        Glide.with(context)
-            .asGif()
-            .load(R.raw.loading_kairos)
-            .into(imgLoading)
+            Glide.with(context)
+                .asGif()
+                .load(R.raw.loading_kairos)
+                .into(imgLoading)
+        }
 
         mDialog!!.show()
     }
@@ -47,23 +49,17 @@ class DialogUtil(private var context: Context, private var delegate: CustomDialo
         builder.setMessage(message)
         builder.setCancelable(false)
 
-        if (positive != null) {
-            builder.setPositiveButton(positive) {dialog, which ->
+        if (positive != null) builder.setPositiveButton(positive) {dialog, which ->
                 delegate?.onClickedPositive(message)
             }
-        }
 
-        if (negative != null) {
-            builder.setNegativeButton(negative) {dialog, which ->
+        if (negative != null) builder.setNegativeButton(negative) {dialog, which ->
 
             }
-        }
 
-        if (cancel != null) {
-            builder.setNeutralButton(cancel) {dialog, which ->
+        if (cancel != null) builder.setNeutralButton(cancel) {dialog, which ->
 
             }
-        }
 
         mDialog = builder.create()
         mDialog!!.show()

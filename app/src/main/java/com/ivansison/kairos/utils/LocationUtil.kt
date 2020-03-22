@@ -13,6 +13,7 @@ import com.google.android.gms.location.*
 class LocationUtil(var context: Context, var delegate: LocationInterface) {
 
     companion object {
+        const val MAX_SEARCHES: Int = 15
         const val LOCATION_ID = 20
     }
 

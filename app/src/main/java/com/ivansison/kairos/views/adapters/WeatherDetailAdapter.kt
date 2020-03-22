@@ -11,11 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.ivansison.kairos.R
-import com.ivansison.kairos.models.Main
+import com.ivansison.kairos.models.Unit
 import com.ivansison.kairos.models.WeatherDetail
-import com.ivansison.kairos.views.activities.HomeActivity
+import com.ivansison.kairos.utils.UnitUtil
 
-class WeatherDetailAdapter(private val context: Context, private val parent: HomeActivity, private val items: ArrayList<WeatherDetail>) : RecyclerView.Adapter<WeatherDetailHolder>() {
+class WeatherDetailAdapter(private val context: Context, private val unit: Unit, private val items: ArrayList<WeatherDetail>) : RecyclerView.Adapter<WeatherDetailHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherDetailHolder {
         return WeatherDetailHolder(LayoutInflater.from(context).inflate(R.layout.layout_weather_detail_item, parent, false))
@@ -24,10 +24,13 @@ class WeatherDetailAdapter(private val context: Context, private val parent: Hom
     override fun onBindViewHolder(holder: WeatherDetailHolder, position: Int) {
         val detail: WeatherDetail = items[position]
         holder.txtTitle.text = detail.title
-        holder.txtValue.text = detail.value
+        holder.txtValue.text = context.getString(R.string.concat_value_unit, detail.value,
+            UnitUtil.getUnitValueSymbol(context, prefUnit = unit, unit = Unit(detail.title, "", "")))
 
-        Glide.with(context).load(detail.image)
+        val drawable: Int = context.resources.getIdentifier(detail.image, "drawable", context.packageName)
+        Glide.with(context).load(drawable)
             .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_image_broken_2x))
             .into(holder.imgIcon)
     }
 

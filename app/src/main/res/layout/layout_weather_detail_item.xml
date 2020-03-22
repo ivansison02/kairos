@@ -7,11 +7,12 @@
 
     <ImageView
         android:id="@+id/img_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:scaleType="fitXY"
+        android:tint="#757575"
         tools:src="@android:drawable/ic_search_category_default"/>
 
     <TextView

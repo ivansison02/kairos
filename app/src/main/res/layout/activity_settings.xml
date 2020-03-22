@@ -12,10 +12,10 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_location"
+            android:id="@+id/toolbar_settings"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
                 android:layout_width="wrap_content"

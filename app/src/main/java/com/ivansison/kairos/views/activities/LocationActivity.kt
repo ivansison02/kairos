@@ -2,8 +2,12 @@ package com.ivansison.kairos.views.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,10 +40,6 @@ class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
 
-        title = ""
-        setSupportActionBar(toolbar_location)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         fld_search.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 if (ValidateUtil.isValidLocation(fld_search.text.toString())) onGetWeather(fld_search.text.toString())
@@ -51,8 +51,27 @@ class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
 
         mCache = CacheUtil(this)
 
+        setupToolbar()
         setupLocation()
         setupRecycler()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar_location)
+
+        val arrow: Drawable = resources.getDrawable(R.drawable.ic_back);
+        arrow.setColorFilter(resources.getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        supportActionBar?.setHomeAsUpIndicator(arrow);
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        title = ""
     }
 
     private fun setupLocation() {
@@ -66,7 +85,6 @@ class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
 
         val imgAction: ImageView = layout.findViewById(R.id.img_action)
         imgAction.setOnClickListener {
-            // TODO: Get/Refresh location
             onStartLoading()
             LocationUtil(this, this).getLastLocation()
         }
