@@ -17,10 +17,7 @@ import com.ivansison.kairos.models.Coordinates
 import com.ivansison.kairos.models.Location
 import com.ivansison.kairos.models.RecentSearches
 import com.ivansison.kairos.models.UserPreferences
-import com.ivansison.kairos.utils.CacheUtil
-import com.ivansison.kairos.utils.DialogUtil
-import com.ivansison.kairos.utils.LocationUtil
-import com.ivansison.kairos.utils.ValidateUtil
+import com.ivansison.kairos.utils.*
 import com.ivansison.kairos.views.adapters.LocationAdapter
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.content_location.*
@@ -29,6 +26,8 @@ class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
 
     private var mCurrentLocation: Location? = null
     private var mRecentSearches: ArrayList<Location> = ArrayList()
+
+    private var mUserPrefs: UserPreferences? = null
 
     private var mCache: CacheUtil? = null
     private var mDialog: DialogUtil? = null
@@ -57,7 +56,8 @@ class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
     }
 
     private fun setupLocation() {
-        mCurrentLocation = mCache?.getUserPreferences()?.location
+        mUserPrefs = mCache?.getUserPreferences()
+        mCurrentLocation = mUserPrefs?.location
 
         val layout: View = findViewById(R.id.lyt_my_location)
         lyt_my_location.setOnClickListener {
@@ -129,7 +129,11 @@ class LocationActivity : AppCompatActivity(), LocationUtil.LocationInterface {
     }
 
     override fun onFoundLocation(location: android.location.Location) {
-        mCache?.updateCache(UserPreferences(true, Location(0, "", "", "", Coordinates(location.latitude, location.longitude)), ""))
+        mCache?.updateCache(UserPreferences(
+            true,
+            Location(0, "", "", "", Coordinates(location.latitude, location.longitude)),
+            mUserPrefs!!.prefUnit,
+            mUserPrefs!!.units))
         onStopLoading()
 
         setResult(Activity.RESULT_FIRST_USER, Intent())

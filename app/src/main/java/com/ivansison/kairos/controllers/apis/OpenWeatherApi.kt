@@ -22,8 +22,8 @@ class OpenWeatherApi {
         private fun getService() : OpenWeatherInterface = getBuilder().create(
             OpenWeatherInterface::class.java)
 
-        fun getCurrentWeather(lat: String, lon: String) = getService().getCurrentWeather(lat, lon, ID)
+        fun getCurrentWeather(lat: String, lon: String, unit: String) = getService().getCurrentWeather(lat, lon, unit, ID)
 
-        fun getCurrentWeather(q: String) = getService().getCurrentWeather(q, ID)
+        fun getCurrentWeather(q: String, unit: String) = getService().getCurrentWeather(q, unit, ID)
     }
 }

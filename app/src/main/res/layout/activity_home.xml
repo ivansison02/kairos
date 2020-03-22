@@ -90,7 +90,7 @@
                     android:layout_alignTop="@+id/txt_degree"
                     android:layout_toEndOf="@+id/txt_degree"
                     android:layout_marginTop="8dp"
-                    tools:text="@string/units_fahrenheit"
+                    tools:text="@string/symbol_fahrenheit"
                     android:textSize="24sp"
                     android:textColor="@android:color/white"/>
 
@@ -105,7 +105,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_weather_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/view_margin_medium"/>
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -2,13 +2,17 @@
     <string name="app_name">Kairos</string>
 
     <string name="message_title_notice">Notice</string>
+    <string name="message_title_success">Success</string>
     <string name="message_ok">OK</string>
     <string name="message_invalid_field">Invalid field</string>
+    <string name="message_success_changes">App needs to restart. Upon pressing OK, it will restart to make changes.</string>
 
     <string name="concat_city_country">%s, %s</string>
+    <string name="concat_selected_value">Selected: %s</string>
 
-    <string name="units_fahrenheit">°F</string>
-    <string name="units_celcius">°C</string>
+    <string name="symbol_fahrenheit">°F</string>
+    <string name="symbol_celsius">°C</string>
+    <string name="symbol_kelvin">K</string>
 
     <string name="view_location_search">Search location</string>
     <string name="view_location_my">My Location</string>
@@ -17,10 +21,32 @@
     <string name="view_location_get_current">Get current location</string>
     <string name="view_location_no_results">No Results Found</string>
 
+    <string name="view_settings_title">Settings</string>
     <string name="view_settings_about">About</string>
     <string name="view_settings_about_description">This app is for the requirement of the position Android Mobile Developer.</string>
     <string name="view_settings_units">Units</string>
     <string name="view_settings_temperature">Temperature</string>
-    <string name="view_settings_units_temperature">Selected: %s</string>
-    <string name="view_settings_title">Settings</string>
+    <string name="view_settings_temperature_max">Max Temp</string>
+    <string name="view_settings_temperature_min">Min Temp</string>
+    <string name="view_settings_humidity">Humidity</string>
+    <string name="view_settings_pressure">Pressure</string>
+    <string name="view_settings_level_sea">Sea Level</string>
+    <string name="view_settings_level_ground">Ground Level</string>
+    <string name="view_settings_wind">Wind</string>
+    <string name="view_settings_feels_like">Feels Like</string>
+
+    <string name="unit_of_measurement">Unit of Measurement</string>
+    <string name="unit_percentage">Percentage</string>
+    <string name="unit_standard">Standard</string> <!-- Kelvin -->
+    <string name="unit_imperial">Imperial</string> <!-- Fahrenheit -->
+    <string name="unit_metric">Metric</string> <!-- Celsius -->
+    <string name="unit_kelvin">Kelvin</string>
+    <string name="unit_celsius">Celsius</string>
+    <string name="unit_fahrenheit">Fahrenheit</string>
+    <string name="unit_pascal_hecto">hPa</string>
+    <string name="unit_meter_per_second">Meter/Sec</string>
+    <string name="unit_miles_per_hour">Miles/Hour</string>
+    <string name="view_settings_cloudiness">Cloudiness</string>
+    <string name="view_settings_precipitation">Precipitation</string>
+    <string name="view_settings_snow">Snow</string>
 </resources>

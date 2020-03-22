@@ -14,14 +14,14 @@ import com.ivansison.kairos.R
 import com.ivansison.kairos.models.Location
 import com.ivansison.kairos.views.activities.LocationActivity
 
-class LocationAdapter(val context: Context, val parent: LocationActivity, val items: ArrayList<Location>) : RecyclerView.Adapter<LocationHolder>() {
+class LocationAdapter(private val context: Context, private val parent: LocationActivity, private val items: ArrayList<Location>) : RecyclerView.Adapter<LocationHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationHolder {
         return LocationHolder(LayoutInflater.from(context).inflate(R.layout.layout_location_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: LocationHolder, position: Int) {
-        val location: Location = items.get(position)
+        val location: Location = items[position]
         holder.txtAddress1.text = location.address1
         holder.txtAddress2.text = location.country
         Glide.with(context).load(context.getDrawable(R.drawable.ic_remove_2x))

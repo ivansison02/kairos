@@ -9,6 +9,9 @@
     tools:showIn="@layout/activity_settings"
     tools:context=".views.activities.SettingsActivity">
 
+    <include layout="@layout/layout_unit_item"
+        android:id="@+id/lyt_unit"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,29 +22,12 @@
         android:textAllCaps="true"
         style="@style/TextAppearance.ContentTitle.Primary"/>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/view_margin_medium"
-        android:layout_marginEnd="@dimen/view_margin_medium"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_margin_small"
-            android:text="@string/view_settings_temperature"
-            android:textAllCaps="true"
-            style="@style/TextAppearance.ContentTitle"/>
-
-        <TextView
-            android:id="@+id/txt_temperature"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_margin_extra_small"
-            android:text="@string/view_settings_units_temperature"
-            style="@style/TextAppearance.ContentBody"/>
-    </LinearLayout>
+        tools:listitem="@layout/layout_unit_item"
+        tools:itemCount="4"/>
 
     <TextView
         android:layout_width="match_parent"

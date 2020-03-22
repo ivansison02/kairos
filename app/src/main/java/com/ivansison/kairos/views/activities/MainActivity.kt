@@ -12,14 +12,13 @@ import android.os.Looper
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.*
+
 import com.ivansison.kairos.R
 import com.ivansison.kairos.models.Coordinates
 import com.ivansison.kairos.models.RecentSearches
 import com.ivansison.kairos.models.UserPreferences
-import com.ivansison.kairos.utils.CacheUtil
-import com.ivansison.kairos.utils.DialogUtil
-import com.ivansison.kairos.utils.LocationUtil
-import com.ivansison.kairos.utils.PermissionUtil
+import com.ivansison.kairos.utils.*
+import com.ivansison.kairos.models.Location as LocationModel
 
 
 class MainActivity : AppCompatActivity(), LocationUtil.LocationInterface {
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity(), LocationUtil.LocationInterface {
         setContentView(R.layout.activity_main)
 
         mCache = CacheUtil(this)
-        mLoadingDialog = DialogUtil(this)
+        mLoadingDialog = DialogUtil(this, null)
         mLocationUtil = LocationUtil(this, this)
 
         if (mCache!!.hasCache()) onStartAnimation()
@@ -72,7 +71,12 @@ class MainActivity : AppCompatActivity(), LocationUtil.LocationInterface {
 
     // MARK: - LocationInterface
     override fun onFoundLocation(location: Location) {
-        mCache?.updateCache(UserPreferences(true, com.ivansison.kairos.models.Location(0, "", "", "", Coordinates(location.latitude, location.longitude)), ""))
+        mCache?.updateCache(UserPreferences(
+            true,
+            LocationModel(0, "", "", "",
+            Coordinates(location.latitude, location.longitude)),
+            DummyUtil.getDefaultUnit(),
+            DummyUtil.getUnits()))
         mCache?.updateCache(RecentSearches())
 
         onStopLoading()

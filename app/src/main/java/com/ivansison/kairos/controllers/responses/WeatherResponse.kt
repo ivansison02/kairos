@@ -11,7 +11,7 @@ class WeatherResponse(
     var weatherType: ArrayList<WeatherType> = ArrayList<WeatherType>(),
 
     @SerializedName("main")
-    var weatherDetails: WeatherDetails? = null,
+    var details: Main? = null,
 
     @SerializedName("wind")
     var wind: Wind? = null,

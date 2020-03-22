@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="units">
+        <item>@string/unit_standard</item>
+        <item>@string/unit_metric</item>
+        <item>@string/unit_imperial</item>
+    </string-array>
+
+    <string-array name="units_temperature">
+        <item>@string/unit_celsius</item>
+        <item>@string/unit_kelvin</item>
+        <item>@string/unit_fahrenheit</item>
+    </string-array>
+
+    <string-array name="units_humidity">
+        <item>@string/unit_percentage</item>
+    </string-array>
+
+    <string-array name="units_wind_speed">
+        <item>@string/unit_meter_per_second</item>
+        <item>@string/unit_miles_per_hour</item>
+    </string-array>
+
+    <string-array name="units_pressure">
+        <item>@string/unit_pascal_hecto</item>
+    </string-array>
+
+    <string-array name="units_feels_like">
+        <item>@string/unit_celsius</item>
+        <item>@string/unit_kelvin</item>
+        <item>@string/unit_fahrenheit</item>
+    </string-array>
+</resources>

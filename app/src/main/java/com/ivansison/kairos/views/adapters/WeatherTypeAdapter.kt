@@ -16,14 +16,14 @@ import com.ivansison.kairos.controllers.apis.OpenWeatherApi
 import com.ivansison.kairos.models.WeatherType
 import com.ivansison.kairos.views.activities.HomeActivity
 
-class WeatherTypeAdapter(val context: Context, val parent: HomeActivity, val items: ArrayList<WeatherType>) : RecyclerView.Adapter<WeatherTypeHolder>() {
+class WeatherTypeAdapter(private val context: Context, private val parent: HomeActivity, private val items: ArrayList<WeatherType>) : RecyclerView.Adapter<WeatherTypeHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherTypeHolder {
         return WeatherTypeHolder(LayoutInflater.from(context).inflate(R.layout.layout_weather_type_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: WeatherTypeHolder, position: Int) {
-        val type: WeatherType = items.get(position)
+        val type: WeatherType = items[position]
         holder.txtWeather.text = type.description!!.capitalize()
 
         Glide.with(context).load( "${OpenWeatherApi.URL_ICON}${type.icon!!}${OpenWeatherApi.ICON_SIZE}")

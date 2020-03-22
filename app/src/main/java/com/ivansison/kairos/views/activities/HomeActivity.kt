@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
         title = ""
 
         mCache = CacheUtil(this)
-        mDialog = DialogUtil(this)
+        mDialog = DialogUtil(this, null)
 
         onStartAnimating()
 
@@ -111,7 +111,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getCurrentWeather(latitude: String, longitude: String) {
         Log.i(ConstantUtil.TAG, "Getting weather of current location")
-        OpenWeatherApi.getCurrentWeather(lat = latitude, lon = longitude)
+        OpenWeatherApi.getCurrentWeather(lat = latitude, lon = longitude, unit =  mUserPrefs?.prefUnit?.value!!)
             .enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(
                     call: Call<WeatherResponse>,
@@ -129,7 +129,7 @@ class HomeActivity : AppCompatActivity() {
     private fun getCurrentWeather(q: String) {
         onStartLoading()
         Log.i(ConstantUtil.TAG, "Getting weather of current location by city, zip")
-        OpenWeatherApi.getCurrentWeather(q)
+        OpenWeatherApi.getCurrentWeather(q, mUserPrefs?.prefUnit?.value!!)
             .enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(
                     call: Call<WeatherResponse>,
@@ -148,7 +148,7 @@ class HomeActivity : AppCompatActivity() {
         onStopAnimating()
 
         if (ResponseUtil.isSuccessful(response.code())) onFoundCurrentWeather(response.body()!!)
-       else onShowDialog(ResponseUtil.getErrorMessage(response, parameter))
+        else onShowDialog(ResponseUtil.getErrorMessage(response, parameter))
     }
 
     private fun onShowDialog(message: String) {
@@ -180,14 +180,25 @@ class HomeActivity : AppCompatActivity() {
         val country = weather.sys?.country!!
         val city = weather.name!!
 
-        txt_degree.text = weather.weatherDetails?.temp.toString()
+        if (mUserPrefs?.prefUnit?.value!! == getString(R.string.unit_standard)) txt_unit.text = getString(R.string.symbol_kelvin)
+        else if (mUserPrefs?.prefUnit?.value!! == getString(R.string.unit_metric)) txt_unit.text = getString(R.string.symbol_celsius)
+        else txt_unit.text = getString(R.string.symbol_fahrenheit)
+
+        txt_degree.text = weather.details?.temp.toString()
         txt_location.text = getString(R.string.concat_city_country, city, country)
 
         rcv_weather_type.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rcv_weather_type.adapter = WeatherTypeAdapter(this, this, weather.weatherType)
 
         rcv_weather_detail.layoutManager = GridLayoutManager(this, 2)
-        rcv_weather_detail.adapter = WeatherDetailAdapter(this, this, ArrayList())
+        rcv_weather_detail.adapter = WeatherDetailAdapter(this, this,
+            WeatherDetailUtil.getDetails(
+                this,
+                weather.details,
+                weather.clouds,
+                weather.wind,
+                weather.rain,
+                weather.snow))
 
         if (mUserPrefs?.isNew!!) {
             mUserPrefs?.isNew = false

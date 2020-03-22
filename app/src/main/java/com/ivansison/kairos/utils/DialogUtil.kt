@@ -1,20 +1,24 @@
 package com.ivansison.kairos.utils
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.view.Window
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-
 import com.ivansison.kairos.R
-import kotlinx.android.synthetic.main.activity_home.*
+import com.ivansison.kairos.models.Unit
 
-class DialogUtil(private var context: Context) {
+
+class DialogUtil(private var context: Context, private var delegate: CustomDialogInterface?) {
+
     private var mDialog: Dialog? = null
+
+    interface CustomDialogInterface {
+        fun onSelectedItem(unit: Unit, index: Int)
+        fun onClickedPositive(message: String)
+    }
 
     fun onShowLoading() {
         mDialog = Dialog(context)
@@ -41,10 +45,11 @@ class DialogUtil(private var context: Context) {
 
         builder.setTitle(title)
         builder.setMessage(message)
+        builder.setCancelable(false)
 
         if (positive != null) {
             builder.setPositiveButton(positive) {dialog, which ->
-
+                delegate?.onClickedPositive(message)
             }
         }
 
@@ -66,5 +71,14 @@ class DialogUtil(private var context: Context) {
 
     fun onHideMessage() {
         mDialog!!.dismiss()
+    }
+
+    fun onShowMenu(unit: Unit, menus: Array<String>) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(unit.title)
+        builder.setItems(menus, DialogInterface.OnClickListener { dialog, which ->
+            delegate?.onSelectedItem(unit, which)
+        })
+        builder.show()
     }
 }
