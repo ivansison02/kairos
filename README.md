@@ -1,5 +1,5 @@
 # kairos
-Weather app made in Kotlin
+Weather forecast app made with Kotlin.
 
 UI: https://www.figma.com/file/PU5xvyDHrtOPDX7hx1EcLt/Untitled?node-id=7%3A51
 
