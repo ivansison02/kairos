@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class OpenWeatherApi {
+class   OpenWeatherApi {
     companion object {
         val ID: String = "bb4ba03149bbdf75c75449ab2299780d"
         var URL = "https://api.openweathermap.org/"

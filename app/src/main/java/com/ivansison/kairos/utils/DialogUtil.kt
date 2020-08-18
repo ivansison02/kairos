@@ -21,19 +21,17 @@ class DialogUtil(private var context: Context, private var delegate: CustomDialo
     }
 
     fun onShowLoading() {
-        if (mDialog == null) {
-            mDialog = Dialog(context)
-            mDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            mDialog!!.setCancelable(false)
-            mDialog!!.setContentView(R.layout.layout_loading)
+        mDialog = Dialog(context)
+        mDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mDialog!!.setCancelable(false)
+        mDialog!!.setContentView(R.layout.layout_loading)
 
-            val imgLoading: ImageView = mDialog!!.findViewById(R.id.img_loading)
+        val imgLoading: ImageView = mDialog!!.findViewById(R.id.img_loading)
 
-            Glide.with(context)
-                .asGif()
-                .load(R.raw.loading_kairos)
-                .into(imgLoading)
-        }
+        Glide.with(context)
+            .asGif()
+            .load(R.raw.loading_kairos)
+            .into(imgLoading)
 
         mDialog!!.show()
     }

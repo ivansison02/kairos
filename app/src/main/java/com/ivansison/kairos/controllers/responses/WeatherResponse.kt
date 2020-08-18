@@ -42,5 +42,4 @@ class WeatherResponse(
 
     @SerializedName("cod")
     var cod: Float = 0.toFloat()) {
-
 }

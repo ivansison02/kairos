@@ -31,7 +31,7 @@
 
     <string name="view_settings_title">Settings</string>
     <string name="view_settings_about">About</string>
-    <string name="view_settings_about_description">This app is for the requirement of the position Android Mobile Developer.</string>
+    <string name="view_settings_about_description">This is just a sample app of weather forecast with use of OpenWeatherMap API.</string>
     <string name="view_settings_units">Units</string>
     <string name="view_settings_temperature">Temperature</string>
     <string name="view_settings_temperature_max">Max Temp</string>
